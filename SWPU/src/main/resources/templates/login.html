@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>登录</title>
+        <link rel="stylesheet" href="/css/font.css">
+        <link rel="stylesheet" href="/css/xadmin.css">
+        <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/xadmin.js"></script>
+    </head>
+    <body class="login-bg">
+        <div class="login">
+            <div class="message">海宝系统用户登录</div>
+            <div id="darkbannerwrap"></div>
+
+            <form method="post" class="layui-form" id="userForm">
+
+                <input name="userName" placeholder="请输入用户名" type="text" lay-verify="required" class="layui-input">
+                <hr class="hr15">
+                <input name="userPwd" placeholder="请输入密码" type="password" lay-verify="required" class="layui-input">
+                <hr class="hr15">
+                <button class="layui-btn layui-btn-normal" type="submit" lay-submit lay-filter="login">登录</button>
+                <a href="/login/registerPage" class="layui-btn layui-btn-normal">注册</a>
+                <button class="layui-btn layui-btn-normal" type="button" onclick="changeEmail(1)">邮箱登录</button>
+                <span id="info" style="color: red"></span>
+            </form>
+
+
+            <form method="post" class="layui-form" style="display: none" id="emailForm">
+
+                <input name="email" id="email" placeholder="请输入邮箱" type="text" lay-verify="email" class="layui-input">
+                <hr class="hr15">
+                <input name="code" id="code" placeholder="请输入验证码" type="text" class="layui-input">
+                <hr class="hr15">
+                <button class="layui-btn layui-btn-normal" type="submit" lay-submit lay-filter="sendCode">发送验证码</button>
+                <hr class="hr15">
+                <button class="layui-btn layui-btn-normal" type="submit" lay-submit  lay-filter="emailLogin">登录</button>
+                <a href="/login/registerPage" class="layui-btn layui-btn-normal">注册页面</a>
+                <button class="layui-btn layui-btn-normal" type="button" onclick="changeEmail(0)">用户登录</button>
+                <span id="e" style="color: red"></span>
+            </form>
+
+
+        </div>
+
+        <!--            <h1>邮箱登录</h1>-->
+        <!--            <label>邮箱：</label>-->
+        <!--            <input type="text" name="email" id="email">-->
+        <!--            <label>验证码：</label>-->
+        <!--            <input type="text" name="code" id="code">-->
+        <!--            <input type="button" value="发送验证码" onclick="sendCode()">-->
+        <!--            <input type="button" value="邮箱登录" onclick="emailLogin()">-->
+        <!--            <span id="e" style="color: red"></span>-->
+
+
+    </body>
+</html>
+<script>
+
+    //邮箱登录和用户登录表单切换
+    function changeEmail(num) {
+        if (num == 1) {
+            //显示 邮箱登录表单
+            $("#emailForm").show();
+
+            //隐藏用户登录表单
+            $("#userForm").hide();
+
+            //更改标题
+            $(".message").text("海宝系统邮箱登录")
+
+        } else {
+            //显示 用户登录表单
+            $("#userForm").show();
+
+            //隐藏邮箱登录表单
+            $("#emailForm").hide();
+
+            //更改标题
+            $(".message").text("海宝系统用户登录")
+        }
+    }
+
+
+    $(function () {
+        layui.use('form', function () {
+            var form = layui.form;
+
+
+            //用户登录
+            //监听提交
+            form.on('submit(login)', function (data) {
+                $.ajax({
+                    url: "/login/loginAjax",
+                    type: "post",
+                    data: data.field,
+                    dataType: "json",//返回的数据类型
+                    success: function (data) {
+                        //定义{info:"登录成功"}
+
+                        $("#info").text(data.info);
+                        if (data.info == "登录成功") {
+                            window.location.href = "/index";
+                        }
+
+                    }
+                })
+                return false;
+            });
+
+
+            //发送验证码
+            form.on('submit(sendCode)', function (data) {
+                $.ajax({
+                    url: "/login/sendEmail",
+                    type: "post",
+                    data: data.field,
+                    dataType: "json",//返回的数据类型
+                    success: function (data) {
+                        //定义{info:"登录成功"}
+
+                        $("#e").text(data.info);
+
+
+                    }
+                })
+                return false;
+            });
+
+
+            //邮件登录
+            form.on('submit(emailLogin)', function (data) {
+
+                //验证邮箱验证码不能为空
+                if (data.field.code == "") {
+                    layer.alert("邮箱验证码不能为空")
+                    return false;
+                }
+
+                $.ajax({
+                    url: "/login/emailLogin",
+                    type: "post",
+                    data: data.field,
+                    dataType: "json",//返回的数据类型
+                    success: function (data) {
+                        //定义{info:"登录成功"}
+
+                        $("#e").text(data.info);
+
+
+                    }
+                })
+                return false;
+            });
+
+
+        });
+
+
+    })
+
+
+    //登录函数
+    function login() {
+        //    获取用户输入的用户名
+        var name = $("#userName").val();
+        //获取用户输入的密码
+        var pwd = $("#userPwd").val()
+        //发送ajax请求
+        $.ajax({
+            url: "/login/loginAjax",
+            type: "post",
+            data: {"userName": name, "userPwd": pwd},
+            dataType: "json",//返回的数据类型
+            success: function (data) {
+                //定义{info:"登录成功"}
+
+                $("#info").text(data.info);
+
+            }
+        })
+    }
+
+
+    //发送验证码
+    function sendCode() {
+        //    获取用户输入的邮箱
+        var email = $("#email").val();
+        //发送ajax请求
+        $.ajax({
+            url: "/login/sendEmail",
+            type: "post",
+            data: {"email": email},
+            dataType: "json",//返回的数据类型
+            success: function (data) {
+                $("#e").text(data.info);
+            }
+        })
+    }
+
+
+    //邮箱登录验证
+    function emailLogin() {
+        //    获取用户输入的验证码
+        var code = $("#code").val();
+        //发送ajax请求
+        $.ajax({
+            url: "/login/emailLogin",
+            type: "post",
+            data: {"code": code},
+            dataType: "json",//返回的数据类型
+            success: function (data) {
+                $("#e").text(data.info);
+            }
+        })
+
+    }
+
+</script>
