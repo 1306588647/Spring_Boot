@@ -26,6 +26,6 @@ public class UserInfoController {
         //把数据传到前端
         m.put("info",map);
 
-        return "user-list";
+        return "user/user-list";
     }
 }
