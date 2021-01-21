@@ -148,11 +148,26 @@ public class UserInfoServiceImpl implements UserInfoService{
         //总页数
         map.put("totalPage",page.getPages());
         //上一页
-        map.put("pre",page.getPrePage());
+        if(page.getPrePage()==0){
+            map.put("pre",1);
+        }
+        else {
+            map.put("pre",page.getPrePage());
+        }
+
         //下一页
+        //保持在最后一页
         map.put("next",page.getNextPage());
-        return null;
+        if(page.getNextPage()==0){
+            map.put("next",page.getPages());
+        }
+        else {
+            map.put("next",page.getNextPage());
+        }
+
+        //当前页
+        map.put("cur",page.getPageNum());
+
+        return map;
     }
-
-
 }

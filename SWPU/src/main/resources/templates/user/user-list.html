@@ -11,16 +11,26 @@
     </head>
     <body>
 
-        <table class="layui-table"></table>
-        <thead>
-            <th>编号</th>
-            <th>用户名</th>
-            <th>密码</th>
-        </thead>
-        <tbody>
-            <tr th:each="">
-
-            </tr>
-        </tbody>
+        <table class="layui-table">
+            <thead>
+                <th>编号</th>
+                <th>用户名</th>
+                <th>密码</th>
+            </thead>
+            <tbody>
+                <tr th:each="i:${info.list}">
+                    <td th:text="${i.userId}"></td>
+                    <td th:text="${i.userName}"></td>
+                    <td th:text="${i.userPwd}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.pre})}" >上一页</a>
+            <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.next})}" >下一页</a>
+            一共有<span th:text="${info.total}"></span>条数据
+            一共有<span th:text="${info.totalPage}"></span>页
+            当前第<span th:text="${info.cur}"></span>页
+        </div>
     </body>
 </html>
