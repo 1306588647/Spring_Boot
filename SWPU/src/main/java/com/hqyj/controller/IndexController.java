@@ -11,6 +11,7 @@ public class IndexController {
     public String index() {
         return "index";
     }
+//
 
 
     //定义一个访问welcome页面
