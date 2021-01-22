@@ -59,7 +59,7 @@ public class UserInfoServiceImpl implements UserInfoService{
             //从session中获取当前用户信息
             HttpSession session = request.getSession();
             //存入用户对象
-            session.setAttribute("user",userInfo);
+            session.setAttribute("user",userInfo.getUserName());
             return "登录成功";
         }
         return "登录失败";
@@ -118,6 +118,13 @@ public class UserInfoServiceImpl implements UserInfoService{
             //把验证码存入session中
             session.setAttribute("valCode",valCode);
             map.put("info","发送成功");
+
+
+            HttpSession session1 = request.getSession();
+            //存入用户对象
+            session1.setAttribute("user",email);
+
+
             return map;
 
         } catch (Exception e) {

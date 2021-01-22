@@ -86,8 +86,6 @@
     $(function () {
         layui.use('form', function () {
             var form = layui.form;
-
-
             //用户登录
             //监听提交
             form.on('submit(login)', function (data) {
@@ -144,9 +142,11 @@
                     data: data.field,
                     dataType: "json",//返回的数据类型
                     success: function (data) {
-                        //定义{info:"登录成功"}
 
                         $("#e").text(data.info);
+                        if (data.info == "邮箱登录成功") {
+                            window.location.href = "/index";
+                        }
 
 
                     }
