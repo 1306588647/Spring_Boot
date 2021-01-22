@@ -19,7 +19,6 @@ public interface UserInfoService {
     HashMap<String,Object> sendCode(String toEmail, HttpServletRequest request);
 
 
-
     //查询
     HashMap<String,Object> select(UserInfo user);
 

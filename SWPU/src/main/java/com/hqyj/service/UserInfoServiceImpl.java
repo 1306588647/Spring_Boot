@@ -138,7 +138,7 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Override
     public HashMap<String, Object> select(UserInfo user) {
         HashMap<String, Object> map = new HashMap<>();
-        //1 设置分页参数
+        //1 设置分页参数,参数：页码，页码显示条数
         PageHelper.startPage(user.getPage(),user.getRow());
 
         //2  查询数据库表
@@ -163,7 +163,6 @@ public class UserInfoServiceImpl implements UserInfoService{
 
         //下一页
         //保持在最后一页
-        map.put("next",page.getNextPage());
         if(page.getNextPage()==0){
             map.put("next",page.getPages());
         }
