@@ -44,16 +44,6 @@
 
         </div>
 
-        <!--            <h1>邮箱登录</h1>-->
-        <!--            <label>邮箱：</label>-->
-        <!--            <input type="text" name="email" id="email">-->
-        <!--            <label>验证码：</label>-->
-        <!--            <input type="text" name="code" id="code">-->
-        <!--            <input type="button" value="发送验证码" onclick="sendCode()">-->
-        <!--            <input type="button" value="邮箱登录" onclick="emailLogin()">-->
-        <!--            <span id="e" style="color: red"></span>-->
-
-
     </body>
 </html>
 <script>
@@ -159,62 +149,5 @@
 
 
     })
-
-
-    //登录函数
-    function login() {
-        //    获取用户输入的用户名
-        var name = $("#userName").val();
-        //获取用户输入的密码
-        var pwd = $("#userPwd").val()
-        //发送ajax请求
-        $.ajax({
-            url: "/login/loginAjax",
-            type: "post",
-            data: {"userName": name, "userPwd": pwd},
-            dataType: "json",//返回的数据类型
-            success: function (data) {
-                //定义{info:"登录成功"}
-
-                $("#info").text(data.info);
-
-            }
-        })
-    }
-
-
-    //发送验证码
-    function sendCode() {
-        //    获取用户输入的邮箱
-        var email = $("#email").val();
-        //发送ajax请求
-        $.ajax({
-            url: "/login/sendEmail",
-            type: "post",
-            data: {"email": email},
-            dataType: "json",//返回的数据类型
-            success: function (data) {
-                $("#e").text(data.info);
-            }
-        })
-    }
-
-
-    //邮箱登录验证
-    function emailLogin() {
-        //    获取用户输入的验证码
-        var code = $("#code").val();
-        //发送ajax请求
-        $.ajax({
-            url: "/login/emailLogin",
-            type: "post",
-            data: {"code": code},
-            dataType: "json",//返回的数据类型
-            success: function (data) {
-                $("#e").text(data.info);
-            }
-        })
-
-    }
 
 </script>
