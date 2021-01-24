@@ -63,4 +63,25 @@ public class UserInfoController {
         map.put("info",info);
         return map;
     }
+
+    //打开注册弹窗
+    //访问user-add页面
+    @RequestMapping("/addPage")
+    public String addPage() {
+        return "user/user-add";
+    }
+
+
+    //处理ajax注册
+    @RequestMapping("/add")
+    @ResponseBody
+    public HashMap<String,Object> add(UserInfo user){
+        HashMap<String,Object> map = new HashMap<>();
+
+        //访问注册方法
+        String info = userInfoService.register(user);
+        map.put("info",info);
+        return map;
+    }
+
 }

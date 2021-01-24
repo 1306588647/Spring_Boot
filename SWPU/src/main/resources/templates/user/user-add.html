@@ -17,7 +17,7 @@
     </head>
 
     <body>
-        <div class="x-body" style="position: absolute; left: 30%;top: 20%">
+        <div class="x-body"  >
             <form class="layui-form">
                 <div class="layui-form-item">
                     <label for="username" class="layui-form-label">
@@ -88,7 +88,7 @@
                 form.on('submit(add)', function (data) {
                     console.log(data);
                     $.ajax({
-                        url: "/login/register",
+                        url: "/user/add",
                         type: "post",
                         data: data.field,
                         dataType: "json",//返回的数据类型
@@ -98,8 +98,13 @@
                             $("#info").text(data.info);
                             //如果注册成功就跳转到登陆页面
                             if(data.info==="注册成功"){
-                                //window代表浏览器窗口，location表示本地，href表示更改地址
-                                window.location.href="/login/loginPage";
+                                //关闭弹窗
+                                //获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭frame
+                                parent.layer.close(index);
+                                //刷新
+                                parent.window.location.href=parent.window.location.href;
                             }
 
                         }

@@ -10,7 +10,9 @@
         <script type="text/javascript" src="/js/xadmin.js"></script>
     </head>
     <body>
-
+        <td>
+            <button class="layui-btn layui-btn-normal" type="button" onclick="addUser()">添加</button>
+        </td>
         <table class="layui-table">
 
             <thead>
@@ -34,18 +36,28 @@
                 </tr>
             </tbody>
         </table>
-        <div>
-            <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.pre})}" >上一页</a>
-            <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.next})}" >下一页</a>
-            一共有<span th:text="${info.total}"></span>条数据
-            一共有<span th:text="${info.totalPage}"></span>页
-            当前第<span th:text="${info.cur}"></span>页
-        </div>
+        <center>
+            <div>
+                <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.pre})}" >上一页</a>
+                <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.next})}" >下一页</a>
+                一共有<span th:text="${info.total}"></span>条数据
+                一共有<span th:text="${info.totalPage}"></span>页
+                当前第<span th:text="${info.cur}"></span>页
+            </div>
+        </center>
+
     </body>
 </html>
 
 
 <script>
+
+    //添加新用户的方法
+    function addUser(){
+        //打开弹窗
+        x_admin_show("添加用户","/user/addPage",500,300);
+    }
+
 
     //打开修改页面的方法
     function update(obj){
