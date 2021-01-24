@@ -25,4 +25,7 @@ public interface UserInfoService {
     //根据UserId查询
     UserInfo selectByUserId(UserInfo user);
 
+    //修改
+    String update(UserInfo user);
+
 }

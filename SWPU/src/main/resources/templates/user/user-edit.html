@@ -21,7 +21,7 @@
             <form class="layui-form">
 
                 <div class="layui-form-item">
-                    <label for="username" class="layui-form-label">
+                    <label  class="layui-form-label">
                         <span class="x-red">*</span>编号
                     </label>
                     <div class="layui-input-inline">
@@ -33,48 +33,25 @@
                     </div>
                 </div>
 
-
                 <div class="layui-form-item">
-                    <label for="username" class="layui-form-label">
+                    <label  class="layui-form-label">
                         <span class="x-red">*</span>登录名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="userName" name="userName" th:value="${user.userName}" required="" lay-verify="userName"
+                        <input type="text" id="userName" name="userName" th:value="${user.userName}" required=""
                                autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
-                        <span class="x-red">*</span>将会成为您唯一的登入名
+                        <span class="x-red">*</span>将会成为您唯一的用户名
                     </div>
                 </div>
 
 
-
                 <div class="layui-form-item">
-                    <label for="L_pass" class="layui-form-label">
-                        <span class="x-red">*</span>密码
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="userPwd" th:value="${user.userPwd}" required="" lay-verify="pass"
-                               autocomplete="off" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">
-                        6到16个字符
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label">
-                        <span class="x-red">*</span>确认密码
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="password" id="L_repass" name="surePwd" th:value="${user.userPwd}" required="" lay-verify="repass"
-                               autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label">
+                    <label  class="layui-form-label">
                     </label>
                     <button class="layui-btn" lay-filter="add" lay-submit="">
-                        注册
+                        修改
                     </button>
                 </div>
             </form>
@@ -93,32 +70,28 @@
                             return '昵称至少得5个字符啊';
                         }
                     }
-                    , pass: [/(.+){6,12}$/, '密码必须6到12位']
-                    , repass: function (value) {
-                        if ($('#L_pass').val() != $('#L_repass').val()) {
-                            return '两次密码不一致';
-                        }
-                    }
                 });
 
                 //注册
                 form.on('submit(add)', function (data) {
                     console.log(data);
                     $.ajax({
-                        url: "/login/register",
+                        url: "/user/edit",
                         type: "post",
                         data: data.field,
                         dataType: "json",//返回的数据类型
                         success: function (data) {
-                            //定义{info:"注册成功"}
 
                             $("#info").text(data.info);
-                            //如果注册成功就跳转到登陆页面
-                            if(data.info==="注册成功"){
-                                //window代表浏览器窗口，location表示本地，href表示更改地址
-                                window.location.href="/login/loginPage";
+                            if(data.info==="修改成功"){
+                                //关闭弹窗
+                                //获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭frame
+                                parent.layer.close(index);
+                                //刷新
+                                parent.window.location.href=parent.window.location.href;
                             }
-
                         }
                     })
                     return false;

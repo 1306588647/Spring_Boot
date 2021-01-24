@@ -42,29 +42,39 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Override
     public String login(UserInfo user,HttpServletRequest request) {
 
-        //加密用户输入的密码
-        String pwd = mdFive.encrypt(user.getUserPwd(), user.getUserName());
+        //查询用户名是否存在，如果存在则取出他的盐值
+        UserInfo u = userInfoDao.seletByName(user);
+        if (u!=null){
 
-        //把加过密的密码传到数据层中
-        user.setUserPwd(pwd);
+            //加密用户输入的密码，第二个参数取出数据库传进来的盐值
+            String pwd = mdFive.encrypt(user.getUserPwd(), u.getSalt());
 
-        //查询数据库层的登陆方法，并且拿到返回值
-        UserInfo userInfo = userInfoDao.login(user);
+            //把加过密的密码传到数据层中
+            user.setUserPwd(pwd);
+
+            //查询数据库层的登陆方法，并且拿到返回值
+            UserInfo userInfo = userInfoDao.login(user);
 
 
-        //如果查到的值，userinfo就不等不null，否则就等于null
-        if(userInfo!=null){
+            //如果查到的值，userinfo就不等不null，否则就等于null
+            if(userInfo!=null){
 
-            //创建session对象
-            //从session中获取当前用户信息
-            HttpSession session = request.getSession();
-            //存入用户对象
-            session.setAttribute("user",userInfo.getUserName());
-            return "登录成功";
+                //创建session对象
+                //从session中获取当前用户信息
+                HttpSession session = request.getSession();
+                //存入用户对象
+                session.setAttribute("user",userInfo.getUserName());
+                return "登录成功";
+            }
+        }
+        else {
+            return "用户名输入错误";
         }
         return "登录失败";
     }
 
+
+    //注册
     @Override
     public String register(UserInfo user) {
 
@@ -74,11 +84,17 @@ public class UserInfoServiceImpl implements UserInfoService{
         if (num>0){
             return "用户名已经被注册";
         }else {
+            //自动生成盐值,以后最好写一个不重复的算法
+            Random rd = new Random();
+            String salt = String.valueOf(rd.nextInt(10000));
+
             //加密用户输入的密码
-            String pwd = mdFive.encrypt(user.getUserPwd(), user.getUserName());
+            String pwd = mdFive.encrypt(user.getUserPwd(), salt);
 
             //把加过密的密码传到数据层中
             user.setUserPwd(pwd);
+            //存入盐值
+            user.setSalt(salt);
 
             //开始注册
             int n = userInfoDao.register(user);
@@ -180,5 +196,22 @@ public class UserInfoServiceImpl implements UserInfoService{
     public UserInfo selectByUserId(UserInfo user) {
 
         return userInfoDao.selectByUserId(user);
+    }
+
+    @Override
+    public String update(UserInfo user) {
+
+        //验证修改用户名是否重名
+        int v = userInfoDao.valName(user);
+        if (v==0){
+            int num = userInfoDao.update(user);
+            if (num>0){
+                return "修改成功";
+            }
+            return "修改失败";
+        }
+        else {
+            return "用户名重名";
+        }
     }
 }

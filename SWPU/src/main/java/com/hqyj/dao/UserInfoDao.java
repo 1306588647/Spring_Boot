@@ -4,6 +4,7 @@ import com.hqyj.pojo.UserInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -24,8 +25,15 @@ public interface UserInfoDao {
     @Select("select count(*) from userInfo where userName=#{userName}")
     int valName(UserInfo user);
 
+
+    //查询用户名是否存在，并且取出盐值
+    @Select("select * from userInfo where userName=#{userName}")
+    UserInfo seletByName(UserInfo user);
+
+
+
     //注册：返回值为插入结果成功的条数
-    @Insert("insert into userInfo (userName,userPwd) value (#{userName},#{userPwd})")
+    @Insert("insert into userInfo (userName,userPwd,salt) value (#{userName},#{userPwd},#{salt})")
     int register(UserInfo user);
 
 
@@ -37,5 +45,12 @@ public interface UserInfoDao {
     //根据userId查询
     @Select("select * from userInfo where userId=#{userId} ")
     UserInfo selectByUserId(UserInfo user);
+
+    //修改
+    @Update("update userInfo set userName=#{userName} where userId=#{userId}")
+    int update(UserInfo user);
+
+
+
 
 }

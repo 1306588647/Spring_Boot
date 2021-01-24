@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 
@@ -40,5 +41,17 @@ public class UserInfoController {
         m.addAttribute("user",u);
         return "user/user-edit";
     }
+
+
+    //处理修改的ajax请求
+    @RequestMapping("/edit")
+    @ResponseBody
+    public HashMap<String,Object> edit(UserInfo user){
+        HashMap<String,Object> map = new HashMap<>();
+        String info = userInfoService.update(user);
+        map.put("info",info);
+        return map;
+    }
+
 
 }

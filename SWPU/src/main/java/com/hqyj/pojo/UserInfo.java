@@ -13,6 +13,16 @@ public class UserInfo  extends MyPage{
     //描述userInfo中userPwd列的
     private String userPwd;
 
+    //描述salt的列
+    private String salt;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
     public int getUserId() {
         return userId;
