@@ -1,10 +1,7 @@
 package com.hqyj.dao;
 
 import com.hqyj.pojo.UserInfo;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -49,6 +46,10 @@ public interface UserInfoDao {
     //修改
     @Update("update userInfo set userName=#{userName} where userId=#{userId}")
     int update(UserInfo user);
+
+    //删除
+    @Delete("delete from userInfo where userId=#{userId}")
+    int del(UserInfo user);
 
 
 

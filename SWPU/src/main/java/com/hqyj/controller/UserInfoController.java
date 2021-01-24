@@ -54,4 +54,13 @@ public class UserInfoController {
     }
 
 
+    //处理ajax删除
+    @RequestMapping("/del")
+    @ResponseBody
+    public HashMap<String,Object> del(UserInfo user){
+        HashMap<String,Object> map = new HashMap<>();
+        String info = userInfoService.del(user);
+        map.put("info",info);
+        return map;
+    }
 }

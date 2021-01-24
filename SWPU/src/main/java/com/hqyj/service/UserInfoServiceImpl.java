@@ -214,4 +214,13 @@ public class UserInfoServiceImpl implements UserInfoService{
             return "用户名重名";
         }
     }
+
+    @Override
+    public String del(UserInfo user) {
+        int num = userInfoDao.del(user);
+        if (num>0){
+            return "删除成功";
+        }
+        return "删除失败";
+    }
 }

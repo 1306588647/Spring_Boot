@@ -18,6 +18,7 @@
                 <th>用户名</th>
                 <th>密码</th>
                 <th>操作</th>
+                <th>删除</th>
             </thead>
             <tbody>
                 <tr th:each="i:${info.list}">
@@ -26,6 +27,9 @@
                     <td th:text="${i.userPwd}"></td>
                     <td>
                         <button class="layui-btn layui-btn-normal" type="button" onclick="update(this)">修改</button>
+                    </td>
+                    <td>
+                        <button class="layui-btn layui-btn-normal" type="button" onclick="delUser(this)">删除</button>
                     </td>
                 </tr>
             </tbody>
@@ -49,5 +53,32 @@
         var id = $(obj).parent().parent().find("td").eq(0).text();
         //打开弹窗
         x_admin_show("修改","/user/editPage?userId="+id,500,400);
+    }
+
+
+
+    //删除数据
+    function delUser(obj){
+        //获取当前选中行的userId值
+        var id = $(obj).parent().parent().find("td").eq(0).text();
+        //layui的提示框：用提示框确定用户是否删除
+        layer.confirm("你确定要删除吗？",{icon:3,title:"警告"},function (index){
+            $.ajax({
+                url:"/user/del",
+                type:"get",
+                data:{"userId":id},
+                dataType:"json",
+                success:function (data){
+                    layer.alert(data.info)
+                    if (data.info=="删除成功"){
+                        //第一种：刷新
+                         parent.window.location.href=parent.window.location.href;
+                        //
+                        // //第二种
+                        // $(obj).parent().parent().remove();
+                    }
+                }
+            })
+        })
     }
 </script>

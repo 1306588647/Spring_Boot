@@ -28,4 +28,7 @@ public interface UserInfoService {
     //修改
     String update(UserInfo user);
 
+    //删除
+    String del(UserInfo user);
+
 }
