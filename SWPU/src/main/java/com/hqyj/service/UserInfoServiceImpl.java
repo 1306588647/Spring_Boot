@@ -175,4 +175,10 @@ public class UserInfoServiceImpl implements UserInfoService{
 
         return map;
     }
+
+    @Override
+    public UserInfo selectByUserId(UserInfo user) {
+
+        return userInfoDao.selectByUserId(user);
+    }
 }

@@ -17,14 +17,29 @@
     </head>
 
     <body>
-        <div class="x-body" style="position: absolute; left: 30%;top: 20%">
+        <div class="x-body" >
             <form class="layui-form">
+
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>编号
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="userId" disabled name="userId" th:value="${user.userId}" required=""
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>将会成为您唯一的编号
+                    </div>
+                </div>
+
+
                 <div class="layui-form-item">
                     <label for="username" class="layui-form-label">
                         <span class="x-red">*</span>登录名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="userName" name="userName" required="" lay-verify="userName"
+                        <input type="text" id="userName" name="userName" th:value="${user.userName}" required="" lay-verify="userName"
                                autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
@@ -32,12 +47,14 @@
                     </div>
                 </div>
 
+
+
                 <div class="layui-form-item">
                     <label for="L_pass" class="layui-form-label">
                         <span class="x-red">*</span>密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="userPwd" required="" lay-verify="pass"
+                        <input type="password" id="L_pass" name="userPwd" th:value="${user.userPwd}" required="" lay-verify="pass"
                                autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
@@ -49,7 +66,7 @@
                         <span class="x-red">*</span>确认密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_repass" name="surePwd" required="" lay-verify="repass"
+                        <input type="password" id="L_repass" name="surePwd" th:value="${user.userPwd}" required="" lay-verify="repass"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>

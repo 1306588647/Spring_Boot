@@ -33,4 +33,9 @@ public interface UserInfoDao {
     @Select("select * from userInfo")
     List<UserInfo> select();
 
+
+    //根据userId查询
+    @Select("select * from userInfo where userId=#{userId} ")
+    UserInfo selectByUserId(UserInfo user);
+
 }

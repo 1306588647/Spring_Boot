@@ -31,12 +31,13 @@ public class UserInfoController {
 
 
     //打开修改页面
-    //访问user-list页面
+    //访问user-edit页面
     @RequestMapping("/editPage")
     public String editPage(UserInfo user, ModelMap m) {
-
-
-
+        //根据userId查询
+        UserInfo u = userInfoService.selectByUserId(user);
+        //把数据传递到前端
+        m.addAttribute("user",u);
         return "user/user-edit";
     }
 

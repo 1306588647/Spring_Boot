@@ -22,4 +22,7 @@ public interface UserInfoService {
     //查询
     HashMap<String,Object> select(UserInfo user);
 
+    //根据UserId查询
+    UserInfo selectByUserId(UserInfo user);
+
 }
