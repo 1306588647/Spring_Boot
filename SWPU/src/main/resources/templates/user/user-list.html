@@ -17,12 +17,16 @@
                 <th>编号</th>
                 <th>用户名</th>
                 <th>密码</th>
+                <th>操作</th>
             </thead>
             <tbody>
                 <tr th:each="i:${info.list}">
                     <td th:text="${i.userId}"></td>
                     <td th:text="${i.userName}"></td>
                     <td th:text="${i.userPwd}"></td>
+                    <td>
+                        <button class="layui-btn layui-btn-normal" type="button" onclick="update(this)">修改</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -35,3 +39,15 @@
         </div>
     </body>
 </html>
+
+
+<script>
+
+    //打开修改页面的方法
+    function update(obj){
+        //获取当前选中行的userId值
+        var id = $(obj).parent().parent().find("td").eq(0).text();
+        //打开弹窗
+        x_admin_show("修改","/user/editPage?userID="+id);
+    }
+</script>

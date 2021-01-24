@@ -28,4 +28,16 @@ public class UserInfoController {
 
         return "user/user-list";
     }
+
+
+    //打开修改页面
+    //访问user-list页面
+    @RequestMapping("/editPage")
+    public String editPage(UserInfo user, ModelMap m) {
+
+
+
+        return "user/user-edit";
+    }
+
 }
