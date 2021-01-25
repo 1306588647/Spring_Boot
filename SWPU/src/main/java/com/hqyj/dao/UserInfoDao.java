@@ -60,4 +60,8 @@ public interface UserInfoDao {
     @Select("select * from userInfo where userName=#{userName} ")
     List<UserInfo> findByUserName(UserInfo user);
 
+    //修改密码
+    @Update("update userInfo set userPwd=#{userPwd} where userId=#{userId}")
+    int updatePwd(UserInfo user);
+
 }

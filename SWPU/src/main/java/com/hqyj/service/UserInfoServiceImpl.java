@@ -69,7 +69,7 @@ public class UserInfoServiceImpl implements UserInfoService{
                 //从session中获取当前用户信息
                 HttpSession session = request.getSession();
                 //存入用户对象
-                session.setAttribute("user",userInfo.getUserName());
+                session.setAttribute("user",userInfo);
                 return "登录成功";
             }
         }
@@ -255,5 +255,36 @@ public class UserInfoServiceImpl implements UserInfoService{
             return "删除成功";
         }
         return "删除失败";
+    }
+
+
+    @Override
+    public String updatePwd(UserInfo user,HttpServletRequest request) {
+        //取出用户存入session的密码
+        HttpSession session = request.getSession();
+        UserInfo realUser = (UserInfo) session.getAttribute("user");
+        String pwd = realUser.getUserPwd();
+        //加密旧密码
+        String oldPwd = mdFive.encrypt(user.getOldPwd(),realUser.getSalt());
+
+
+        //判断用户输入的旧密码是否正确
+        if (oldPwd.equals(pwd)){
+
+            //加密新密码
+            String p = mdFive.encrypt(user.getNewPwd(),realUser.getSalt());
+            //存入新密码
+            realUser.setUserPwd(p);
+            int num=userInfoDao.updatePwd(realUser);
+            if (num>0){
+                return "修改密码成功";
+            }
+
+        }
+        else {
+            return "旧密码输入不正确";
+        }
+
+        return "修改密码失败";
     }
 }

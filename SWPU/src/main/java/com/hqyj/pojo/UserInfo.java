@@ -22,6 +22,28 @@ public class UserInfo extends MyPage {
     //描述查询条件conValue的参数
     private String conValue;
 
+    //描述修改密码旧密码
+    private String oldPwd;
+
+    //描述修改密码新密码
+    private String newPwd;
+
+    public String getOldPwd() {
+        return oldPwd;
+    }
+
+    public void setOldPwd(String oldPwd) {
+        this.oldPwd = oldPwd;
+    }
+
+    public String getNewPwd() {
+        return newPwd;
+    }
+
+    public void setNewPwd(String newPwd) {
+        this.newPwd = newPwd;
+    }
+
     public String getCondition() {
         return condition;
     }

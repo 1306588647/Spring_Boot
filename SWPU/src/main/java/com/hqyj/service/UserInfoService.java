@@ -32,4 +32,7 @@ public interface UserInfoService {
     //删除
     String del(UserInfo user);
 
+    //修改密码,需要用户名，所以需要session
+    String updatePwd(UserInfo user,HttpServletRequest request);
+
 }
