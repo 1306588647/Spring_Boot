@@ -27,6 +27,8 @@ public class UserInfoController {
         //把数据传到前端
         m.put("info",map);
 
+        //把用户输入的查询条件传到前端
+        m.put("vv",user.getConValue());
         return "user/user-list";
     }
 

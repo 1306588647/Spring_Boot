@@ -21,24 +21,9 @@ public class LoginController {
     @Autowired
     UserInfoService userInfoService;
 
-    //接受用户发送的登录信息，用户名和密码
-    //ModelMap对象的是用来把服务端的值传给前端的
-
-    @RequestMapping("/loginForm")
-    //如果UserInfo中的属性名和数据库列名一样，则可以直接传进UserInfo对象，不用一个一个参数来传
-    //由于刚开始返回值只有一个，所以只需要一个类来装，如果返回值很多，则需要集合来装
-    public String loginForm(UserInfo user, ModelMap map,HttpServletRequest request) {
-
-        String info = userInfoService.login(user,request);
-        map.addAttribute("info",info);
-
-        //返回登录页面
-        return "login";
-
-    }
 
     @RequestMapping("/loginPage")
-    //再定义一个登录访问login.html的方法
+    //定义一个登录访问login.html的方法
     public String loginPage(){
         return "login";
     }
@@ -47,7 +32,7 @@ public class LoginController {
     //ajax登录
     @RequestMapping("/loginAjax")
     @ResponseBody   //此时返回时，不在返回页面，而返回数据，数据格式为刚刚定义的的json格式
-    public HashMap<String,Object> loginajax(UserInfo user,HttpServletRequest request){
+    public HashMap<String,Object> loginAjax(UserInfo user,HttpServletRequest request){
         HashMap<String,Object> map = new HashMap<>();
         String info = userInfoService.login(user,request);
         map.put("info",info);

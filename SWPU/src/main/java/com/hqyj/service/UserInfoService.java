@@ -7,7 +7,8 @@ import java.util.HashMap;
 
 public interface UserInfoService {
 
-    //定义登录方法,之所以返回String，是因为要返回登录成功或者登录失败
+    //定义登录方法,之所以返回String，是因为要返回登录成功或者登录失败，
+    //第一个参数是前端传进来的，里面包含用户名和密码，第二个参数用来获取session对象，将用户名存入session对象中显示在index页面上的
     String login(UserInfo user,HttpServletRequest request);
 
     //注册，返回内容为注册成功或者用户名重名

@@ -86,7 +86,6 @@
                     dataType: "json",//返回的数据类型
                     success: function (data) {
                         //定义{info:"登录成功"}
-
                         $("#info").text(data.info);
                         if (data.info == "登录成功") {
                             window.location.href = "/index";

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -39,22 +40,27 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Autowired
     JavaMailSender javaMailSender;
 
+
+    //登录处理方法
     @Override
+
     public String login(UserInfo user,HttpServletRequest request) {
 
         //查询用户名是否存在，如果存在则取出他的盐值
-        UserInfo u = userInfoDao.seletByName(user);
-        if (u!=null){
+        //user是前端传来的数据，realUser是从数据库中查询的数据
+        UserInfo realUser = userInfoDao.selectByName(user);
 
-            //加密用户输入的密码，第二个参数取出数据库传进来的盐值
-            String pwd = mdFive.encrypt(user.getUserPwd(), u.getSalt());
+        //如果没有查询到该用户，则会返回空值
+        if (realUser!=null){
+
+            //加密用户输入的密码，第二个参数是盐值
+            String pwd = mdFive.encrypt(user.getUserPwd(), realUser.getSalt());
 
             //把加过密的密码传到数据层中
             user.setUserPwd(pwd);
 
             //查询数据库层的登陆方法，并且拿到返回值
             UserInfo userInfo = userInfoDao.login(user);
-
 
             //如果查到的值，userinfo就不等不null，否则就等于null
             if(userInfo!=null){
@@ -153,12 +159,39 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     @Override
     public HashMap<String, Object> select(UserInfo user) {
+
         HashMap<String, Object> map = new HashMap<>();
         //1 设置分页参数,参数：页码，页码显示条数
         PageHelper.startPage(user.getPage(),user.getRow());
 
-        //2  查询数据库表
-        List<UserInfo> list = userInfoDao.select();
+
+        //2 根据用户选择的查询条件判断用户需要查询
+        List<UserInfo> list = new ArrayList<>();
+
+        //判断用户输入的查询条件是否有值
+        if ("".equals(user.getConValue())){
+            list = userInfoDao.select();
+        }
+        else {
+
+            if ("编号".equals(user.getCondition())){
+
+                //设置用户输入的查询条件
+                user.setUserId(Integer.parseInt(user.getConValue()));
+                list = userInfoDao.findByUserId(user);
+            }
+            else if("用户名".equals(user.getCondition())){
+
+                //设置用户输入的查询条件
+                user.setUserName(user.getConValue());
+                list = userInfoDao.findByUserName(user);
+            }
+            else {
+                list = userInfoDao.select();
+            }
+        }
+
+
 
         //3 把查询的数据转换成分页对象
         PageInfo<UserInfo> page = new PageInfo<>(list);

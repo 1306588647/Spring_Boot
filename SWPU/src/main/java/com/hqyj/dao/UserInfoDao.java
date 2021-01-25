@@ -12,20 +12,21 @@ import java.util.List;
 public interface UserInfoDao {
 
     //登录
-    //这个注解会把下面方法括号里面对象里面的属性值取出来放在大括号里面,并且把查询结果进行返回
-    //前提是列名和属性值相同
+    //注解会根据sql语句查询，条件语句中前面是列名，后面的是从下面方法参数中的对象中的属性取出来的值，也就是传进来的值
+    //之所以只需要填写一个对象是因为，列名和属性名是相同的
     @Select("select * from userInfo where userName=#{userName} and userPwd=#{userPwd}")
     UserInfo login(UserInfo user);
+
+
+    //查询用户名是否存在，如果存在则取出盐值
+    @Select("select * from userInfo where userName=#{userName}")
+    UserInfo selectByName(UserInfo user);
+
 
 
     //验证用户名是否重名,返回值为查询结果的个数
     @Select("select count(*) from userInfo where userName=#{userName}")
     int valName(UserInfo user);
-
-
-    //查询用户名是否存在，并且取出盐值
-    @Select("select * from userInfo where userName=#{userName}")
-    UserInfo seletByName(UserInfo user);
 
 
 
@@ -51,7 +52,12 @@ public interface UserInfoDao {
     @Delete("delete from userInfo where userId=#{userId}")
     int del(UserInfo user);
 
+    //根据编号查询
+    @Select("select * from userInfo where userId=#{userId} ")
+    List<UserInfo> findByUserId(UserInfo user);
 
-
+    //根据用户名查询
+    @Select("select * from userInfo where userName=#{userName} ")
+    List<UserInfo> findByUserName(UserInfo user);
 
 }

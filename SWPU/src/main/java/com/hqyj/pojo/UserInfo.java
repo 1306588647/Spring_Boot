@@ -2,7 +2,7 @@ package com.hqyj.pojo;
 
 
 //用来描述表userInfo的信息
-public class UserInfo  extends MyPage{
+public class UserInfo extends MyPage {
 
     //描述userInfo中userId列的
     private int userId;
@@ -15,6 +15,30 @@ public class UserInfo  extends MyPage{
 
     //描述salt的列
     private String salt;
+
+    //描述查询条件condition的参数
+    private String condition;
+
+    //描述查询条件conValue的参数
+    private String conValue;
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public String getConValue() {
+        return conValue;
+    }
+
+    public void setConValue(String conValue) {
+        this.conValue = conValue;
+    }
+
+
 
     public String getSalt() {
         return salt;

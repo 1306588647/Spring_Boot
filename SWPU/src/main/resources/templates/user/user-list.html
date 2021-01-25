@@ -10,9 +10,22 @@
         <script type="text/javascript" src="/js/xadmin.js"></script>
     </head>
     <body>
+
         <td>
             <button class="layui-btn layui-btn-normal" type="button" onclick="addUser()">添加</button>
         </td>
+
+        <form class="x-so" action="/user/list">
+            <select id="condition" name="condition" style="width: 100px;height: 37px">
+                <option value="-----">-----</option>
+                <option value="编号">编号</option>
+                <option value="用户名">用户名</option>
+            </select>
+            <input class="layui-input" name="conValue" th:value="${vv}" type="text" placeholder="请输入查询条件">
+            <input type="submit" class="layui-btn layui-btn-normal" value="查询">
+        </form>
+
+
         <table class="layui-table">
 
             <thead>
@@ -38,8 +51,8 @@
         </table>
         <center>
             <div>
-                <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.pre})}" >上一页</a>
-                <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.next})}" >下一页</a>
+                <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.pre})}">上一页</a>
+                <a class="layui-btn layui-btn-normal" th:href="@{/user/list(page=${info.next})}">下一页</a>
                 一共有<span th:text="${info.total}"></span>条数据
                 一共有<span th:text="${info.totalPage}"></span>页
                 当前第<span th:text="${info.cur}"></span>页
@@ -53,38 +66,37 @@
 <script>
 
     //添加新用户的方法
-    function addUser(){
+    function addUser() {
         //打开弹窗
-        x_admin_show("添加用户","/user/addPage",500,300);
+        x_admin_show("添加用户", "/user/addPage", 550, 300);
     }
 
 
     //打开修改页面的方法
-    function update(obj){
+    function update(obj) {
         //获取当前选中行的userId值
         var id = $(obj).parent().parent().find("td").eq(0).text();
         //打开弹窗
-        x_admin_show("修改","/user/editPage?userId="+id,500,400);
+        x_admin_show("修改", "/user/editPage?userId=" + id, 500, 400);
     }
 
 
-
     //删除数据
-    function delUser(obj){
+    function delUser(obj) {
         //获取当前选中行的userId值
         var id = $(obj).parent().parent().find("td").eq(0).text();
         //layui的提示框：用提示框确定用户是否删除
-        layer.confirm("你确定要删除吗？",{icon:3,title:"警告"},function (index){
+        layer.confirm("你确定要删除吗？", {icon: 3, title: "警告"}, function (index) {
             $.ajax({
-                url:"/user/del",
-                type:"get",
-                data:{"userId":id},
-                dataType:"json",
-                success:function (data){
+                url: "/user/del",
+                type: "get",
+                data: {"userId": id},
+                dataType: "json",
+                success: function (data) {
                     layer.alert(data.info)
-                    if (data.info=="删除成功"){
+                    if (data.info == "删除成功") {
                         //第一种：刷新
-                         parent.window.location.href=parent.window.location.href;
+                        parent.window.location.href = parent.window.location.href;
                         //
                         // //第二种
                         // $(obj).parent().parent().remove();
