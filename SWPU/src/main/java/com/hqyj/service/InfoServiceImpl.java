@@ -28,7 +28,19 @@ public class InfoServiceImpl implements InfoService{
         //遍历查询的数据集合
         for (Info i : list) {
             HashMap<String,Object> m =new HashMap<>();
-            m.put("value",i.getCuredCount());
+
+            //判断用户统计的
+            if (info.getCon().equals("0")){
+                //加载确诊人数
+                m.put("value",i.getConfirmCount());
+            }
+            else if (info.getCon().equals("1")){
+                m.put("value",i.getCuredCount());
+            }
+            else{
+                m.put("value",i.getDeadCount());
+            }
+
             m.put("name",i.getProvinceName());
             //添加到构建饼图的即合理
             mapList.add(m);
@@ -36,5 +48,10 @@ public class InfoServiceImpl implements InfoService{
         //把构建好的饼图数据存到map中
         map.put("info",mapList);
         return map;
+    }
+
+    @Override
+    public List<Info> selectTime() {
+        return infoDao.selectTime();
     }
 }

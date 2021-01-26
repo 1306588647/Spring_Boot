@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("/info")
@@ -27,5 +28,13 @@ public class InfoController {
     @ResponseBody
     public HashMap<String,Object> bingAjax(Info info){
         return infoService.bing(info);
+    }
+
+
+    //查询时间
+    @RequestMapping("/time")
+    @ResponseBody
+    public List<Info> time(){
+        return infoService.selectTime();
     }
 }

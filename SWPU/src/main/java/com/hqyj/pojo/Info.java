@@ -9,6 +9,15 @@ public class Info {
     private int confirmCount;
     private int curedCount;
     private int deadCount;
+    private String con;
+
+    public String getCon() {
+        return con;
+    }
+
+    public void setCon(String con) {
+        this.con = con;
+    }
 
     public int getCode() {
         return code;
