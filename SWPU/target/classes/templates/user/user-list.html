@@ -15,14 +15,14 @@
             <button class="layui-btn layui-btn-normal" type="button" onclick="addUser()">添加</button>
         </td>
 
-        <form class="x-so" action="/user/list">
+        <form class="x-so" action="/user/list" id="myform">
             <select id="condition" name="condition" style="width: 100px;height: 37px">
                 <option value="-----">-----</option>
                 <option value="编号">编号</option>
                 <option value="用户名">用户名</option>
             </select>
-            <input class="layui-input" name="conValue" th:value="${vv}" type="text" placeholder="请输入查询条件">
-            <input type="submit" class="layui-btn layui-btn-normal" value="查询">
+            <input class="layui-input" name="conValue" id="conValue" th:value="${vv}" type="text" placeholder="请输入查询条件">
+            <input type="button" class="layui-btn layui-btn-normal" value="查询" onclick="search()">
         </form>
 
 
@@ -104,5 +104,33 @@
                 }
             })
         })
+    }
+
+
+    //查询验证
+    function search(){
+        //获取用户输入的查询条件
+        var v = $("#conValue").val();
+        //获取用户选择的查询
+        var con = $("#condition").val();
+        //判断用户选择的查询条件
+        if (con=="编号"){
+
+            //创建一个正则表达式对象
+            var re =/^[0-9]*$/;
+            //验证用户输入的信息是否是数字
+            if (re.test(v)){
+                //用js做表单提交
+                document.getElementById("myform").submit();
+            }
+            else {
+                layer.alert("请输入数字")
+            }
+
+        }
+        else {
+            //用js做表单提交
+            document.getElementById("myform").submit();
+        }
     }
 </script>
