@@ -98,8 +98,12 @@
                             $("#info").text(data.info);
                             //如果注册成功就跳转到登陆页面
                             if(data.info==="注册成功"){
-                                //window代表浏览器窗口，location表示本地，href表示更改地址
-                                window.location.href="/login/loginPage";
+                                //弹窗确定
+                                layer.alert(data.info,function(index){
+                                    //window代表浏览器窗口，location表示本地，href表示更改地址
+                                    window.location.href="/login/loginPage";
+                                })
+
                             }
 
                         }

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="/js/jquery-3.2.1.min.js"></script>
+        <script src="/js/echarts.min.js"></script>
+        <style>
+            html, body {
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="position: absolute;left: 40%;">
+            <select id="time" style="width: 120px;height: 25px">
+
+            </select>
+
+            <select id="con" style="width: 120px;height: 25px">
+                <option value="0">确诊人数</option>
+                <option value="1">治愈人数</option>
+                <option value="2">死亡人数</option>
+            </select>
+            <button type="button" onclick="zhu()">查询</button>
+        </div>
+
+        <!--创建一个容器-->
+        <div id="main" style="position: absolute;top:50px;width: 100%;height: 100%" ;></div>
+
+    </body>
+</html>
+<script>
+    //定义jquery文档加载事件
+    $(function () {
+        //执行加载事件函数
+        loodTime();
+
+    })
+
+    //柱状 函数
+    function zhu() {
+        //获取选中的查询时间
+        var time =$("#time").val();
+        //获取选中的查询条件
+        var con=$("#con").val();
+
+
+
+        //发送ajax请求
+        $.ajax({
+            url: "/info/zhuAjax",
+            type: "get",
+            data: {"time": time,"con":con},
+            dataType: "json",
+            success: function (data) {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('main'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '统计新冠肺炎各省治愈人数',
+                        subtext: time,
+                        left: 'center'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: data.x
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: data.y,
+                        type: 'bar',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(180, 180, 180, 0.2)'
+                        }
+                    }]
+                };
+
+
+                //根据查询条件修改图表标题
+                if (con==0){
+                    option.title.text="统计新冠肺炎各省确诊人数"
+                }
+                else if(con==1){
+                    option.title.text="统计新冠肺炎各省治愈人数"
+                }
+                else {
+                    option.title.text="统计新冠肺炎各省死亡人数"
+                }
+
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            }
+        })
+    }
+
+
+    //查询时间
+    function loodTime() {
+        //发送ajax请求
+        $.ajax({
+            url: "/info/time",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                //创建一个拼接字符串的变量
+                var html="";
+                //遍历服务端传来的集合数据json数据
+                for (var i = 0; i <data.length ; i++) {
+                    html+="<option value='"+data[i].time+"'>"+data[i].time+"</option>"
+                }
+                //把html加载到下拉框
+                $("#time").html(html);
+
+                //执行饼图函数
+                zhu();
+            }
+        })
+    }
+</script>

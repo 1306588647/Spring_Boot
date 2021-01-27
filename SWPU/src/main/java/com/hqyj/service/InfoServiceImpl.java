@@ -50,8 +50,45 @@ public class InfoServiceImpl implements InfoService{
         return map;
     }
 
+
+
     @Override
     public List<Info> selectTime() {
         return infoDao.selectTime();
+    }
+
+    @Override
+    public HashMap<String, Object> zhu(Info info) {
+        HashMap<String,Object> map = new HashMap<>();
+        //查询数据库
+        List<Info> list = infoDao.select(info);
+
+        //构建X轴数据，省份数据
+        List<String> xList= new ArrayList<>();
+
+        //构建Y轴数据，人数数据
+        List<Integer> yList= new ArrayList<>();
+        //构建柱状图数据
+        //构建人数y轴数据
+        for (Info i : list) {
+            if (info.getCon().equals("0")){
+                //加载确诊人数
+                yList.add(i.getConfirmCount());
+            }
+            else if (info.getCon().equals("1")){
+                yList.add(i.getCuredCount());
+            }
+            else{
+                yList.add(i.getDeadCount());
+            }
+            //构建省份x轴数据
+            xList.add(i.getProvinceName());
+        }
+
+        //把x轴和y轴数据传到map中
+        map.put("x",xList);
+        map.put("y",yList);
+
+        return map;
     }
 }

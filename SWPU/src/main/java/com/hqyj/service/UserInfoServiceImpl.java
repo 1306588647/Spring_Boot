@@ -43,26 +43,26 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     //登录处理方法
     @Override
-
     public String login(UserInfo user,HttpServletRequest request) {
 
         //查询用户名是否存在，如果存在则取出他的盐值
-        //user是前端传来的数据，realUser是从数据库中查询的数据
-        UserInfo realUser = userInfoDao.selectByName(user);
+        //user是前端传来的数据，userFromSql是从数据库中查询的数据
+        //如果查询到则返回那一条数据，如果没有查询到则会返回空值
+        UserInfo userFromSql = userInfoDao.selectByName(user);
 
-        //如果没有查询到该用户，则会返回空值
-        if (realUser!=null){
 
-            //加密用户输入的密码，第二个参数是盐值
-            String pwd = mdFive.encrypt(user.getUserPwd(), realUser.getSalt());
+        if (userFromSql!=null){
+
+            //加密用户输入的密码，第二个参数是该用户的盐值
+            String pwd = mdFive.encrypt(user.getUserPwd(), userFromSql.getSalt());
 
             //把加过密的密码传到数据层中
             user.setUserPwd(pwd);
 
-            //查询数据库层的登陆方法，并且拿到返回值
+            //查询数据库层的登陆方法，验证用户名和加密后的密码是否一样，并且拿到返回值
             UserInfo userInfo = userInfoDao.login(user);
 
-            //如果查到的值，userinfo就不等不null，否则就等于null
+            //如果用户名和密码一样，userinfo就不等不null，否则就等于null
             if(userInfo!=null){
 
                 //创建session对象
@@ -78,6 +78,7 @@ public class UserInfoServiceImpl implements UserInfoService{
         }
         return "登录失败";
     }
+
 
 
     //注册

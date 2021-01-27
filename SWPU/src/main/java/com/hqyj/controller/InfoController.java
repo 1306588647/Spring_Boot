@@ -37,4 +37,18 @@ public class InfoController {
     public List<Info> time(){
         return infoService.selectTime();
     }
+
+
+    //访问柱状图页面
+    @RequestMapping("/zhu")
+    public String zhu() {
+        return "info/zhu";
+    }
+
+    //处理柱状图的ajax的请求
+    @RequestMapping("/zhuAjax")
+    @ResponseBody
+    public HashMap<String,Object> zhuAjax(Info info){
+        return infoService.zhu(info);
+    }
 }

@@ -40,6 +40,7 @@ public class LoginController {
     }
 
 
+
     //访问注册页面
     @RequestMapping("/registerPage")
     //再定义一个登录访问register.html的方法
@@ -51,7 +52,7 @@ public class LoginController {
     //处理注册
     @RequestMapping("/register")
     @ResponseBody
-    public HashMap<String,Object> registerajax(UserInfo user){
+    public HashMap<String,Object> registerAjax(UserInfo user){
         HashMap<String,Object> map = new HashMap<>();
 
         //访问注册方法

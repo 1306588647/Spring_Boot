@@ -13,4 +13,7 @@ public interface InfoService {
 
     //查询时间
     List<Info> selectTime();
+
+    //柱状图
+    HashMap<String, Object> zhu(Info info);
 }
