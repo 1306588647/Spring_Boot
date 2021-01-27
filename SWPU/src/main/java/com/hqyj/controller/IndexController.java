@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 
-
 @Controller
 public class IndexController {
 
@@ -39,13 +38,12 @@ public class IndexController {
     //处理修改密码的ajax请求
     @RequestMapping("/updatePwdAjax")
     @ResponseBody
-    public HashMap<String,Object> updatePwdAjax(UserInfo user, HttpServletRequest request) {
-        HashMap<String,Object> map = new HashMap<>();
-        String info =userInfoService.updatePwd(user,request);
-        map.put("info",info);
+    public HashMap<String, Object> updatePwdAjax(UserInfo user, HttpServletRequest request) {
+        HashMap<String, Object> map = new HashMap<>();
+        String info = userInfoService.updatePwd(user, request);
+        map.put("info", info);
         return map;
     }
-
 
 
 }

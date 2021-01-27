@@ -33,6 +33,17 @@ public class UserInfoController {
     }
 
 
+
+    //前后端分离
+    //处理表格的ajax数据
+    @RequestMapping("/listAjax")
+    @ResponseBody
+    public HashMap<String, Object> listAjax(UserInfo user) {
+        return  userInfoService.select(user);
+    }
+
+
+
     //打开修改页面
     //访问user-edit页面
     @RequestMapping("/editPage")

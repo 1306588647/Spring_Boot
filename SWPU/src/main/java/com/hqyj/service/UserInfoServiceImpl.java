@@ -143,11 +143,6 @@ public class UserInfoServiceImpl implements UserInfoService{
             map.put("info","发送成功");
 
 
-            HttpSession session1 = request.getSession();
-            //存入用户对象
-            session1.setAttribute("user",email);
-
-
             return map;
 
         } catch (Exception e) {
