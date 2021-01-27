@@ -5,6 +5,7 @@
         <title>Title</title>
         <script src="/js/jquery-3.2.1.min.js"></script>
         <script src="/js/echarts.min.js"></script>
+        <script src="/js/china.js"></script>
         <style>
             html, body {
                 height: 100%;
@@ -22,11 +23,7 @@
                 <option value="1">治愈人数</option>
                 <option value="2">死亡人数</option>
             </select>
-            <select id=tu style="width: 120px;height: 25px">
-                <option value="折线图">折线图</option>
-                <option value="柱状图">柱状图</option>
-            </select>
-            <button type="button" onclick="zhu()">查询</button>
+            <button type="button" onclick="bing()">查询</button>
         </div>
 
         <!--创建一个容器-->
@@ -40,21 +37,21 @@
         //执行加载事件函数
         loodTime();
 
+
     })
 
-    //柱状 函数
-    function zhu() {
+    //饼图 函数
+    function bing() {
         //获取选中的查询时间
         var time =$("#time").val();
         //获取选中的查询条件
         var con=$("#con").val();
 
-        //获取选中的图表类型
-        var tu=$("#tu").val();
+
 
         //发送ajax请求
         $.ajax({
-            url: "/info/zhuAjax",
+            url: "/info/bingAjax",
             type: "get",
             data: {"time": time,"con":con},
             dataType: "json",
@@ -63,29 +60,87 @@
                 var myChart = echarts.init(document.getElementById('main'));
 
                 // 指定图表的配置项和数据
-                var option = {
+                option = {
                     title: {
                         text: '统计新冠肺炎各省治愈人数',
                         subtext: time,
                         left: 'center'
                     },
-                    xAxis: {
-                        type: 'category',
-                        data: data.x
+                    tooltip: {
+                        triggerOn: "click",
+                        formatter: function(e, t, n) {
+                            return .5 == e.value ? e.name + "：有疑似病例" : e.seriesName + "<br />" + e.name + "：" + e.value
+                        }
                     },
-                    yAxis: {
-                        type: 'value'
+                    visualMap: {
+                        min: 0,
+                        max: 1000,
+                        left: 26,
+                        bottom: 40,
+                        showLabel: !0,
+                        text: ["高", "低"],
+                        pieces: [{
+                            gt: 100,
+                            label: "> 100 人",
+                            color: "#7f1100"
+                        }, {
+                            gte: 10,
+                            lte: 100,
+                            label: "10 - 100 人",
+                            color: "#ff5428"
+                        }, {
+                            gte: 1,
+                            lt: 10,
+                            label: "1 - 9 人",
+                            color: "#ff8c71"
+                        }, {
+                            gt: 0,
+                            lt: 1,
+                            label: "疑似",
+                            color: "#ffd768"
+                        }, {
+                            value: 0,
+                            color: "#ffffff"
+                        }],
+                        show: !0
+                    },
+                    geo: {
+                        map: "china",
+                        roam: !1,
+                        scaleLimit: {
+                            min: 1,
+                            max: 2
+                        },
+                        zoom: 1.23,
+                        top: 120,
+                        label: {
+                            normal: {
+                                show: !0,
+                                fontSize: "14",
+                                color: "rgba(0,0,0,0.7)"
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                //shadowBlur: 50,
+                                //shadowColor: 'rgba(0, 0, 0, 0.2)',
+                                borderColor: "rgba(0, 0, 0, 0.2)"
+                            },
+                            emphasis: {
+                                areaColor: "#f2d5ad",
+                                shadowOffsetX: 0,
+                                shadowOffsetY: 0,
+                                borderWidth: 0
+                            }
+                        }
                     },
                     series: [{
-                        data: data.y,
-                        type: 'bar',
-                        showBackground: true,
-                        backgroundStyle: {
-                            color: 'rgba(180, 180, 180, 0.2)'
-                        }
+                        name: "确诊病例",
+                        type: "map",
+                        geoIndex: 0,
+                        data: data.info
                     }]
                 };
-
 
                 //根据查询条件修改图表标题
                 if (con==0){
@@ -97,17 +152,6 @@
                 else {
                     option.title.text="统计新冠肺炎各省死亡人数"
                 }
-
-
-                //判断用户查看图的类型
-                if (tu=="柱状图"){
-                    option.series[0].type="bar";
-                }
-                else {
-                    option.series[0].type="line";
-                }
-
-
 
 
                 // 使用刚指定的配置项和数据显示图表。
@@ -135,7 +179,7 @@
                 $("#time").html(html);
 
                 //执行饼图函数
-                zhu();
+                bing();
             }
         })
     }

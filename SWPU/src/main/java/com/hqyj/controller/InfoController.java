@@ -51,4 +51,20 @@ public class InfoController {
     public HashMap<String,Object> zhuAjax(Info info){
         return infoService.zhu(info);
     }
+
+
+
+    //访问地图页面
+    @RequestMapping("/china")
+    public String china() {
+        return "info/china";
+    }
+
+
+    //访问世界地图页面
+    @RequestMapping("/world")
+    public String world() {
+        return "info/world";
+    }
+
 }
