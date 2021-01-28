@@ -64,4 +64,8 @@ public interface UserInfoDao {
     @Update("update userInfo set userPwd=#{userPwd} where userId=#{userId}")
     int updatePwd(UserInfo user);
 
+    //修改头像
+    @Update("update userInfo set url=#{url} where userId=#{userId}")
+    int updateHead(UserInfo user);
+
 }

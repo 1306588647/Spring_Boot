@@ -83,6 +83,7 @@
             //用户登录
             //监听提交
             form.on('submit(login)', function (data) {
+                console.log(data);
                 $.ajax({
                     url: "/login/loginAjax",
                     type: "post",
@@ -94,7 +95,6 @@
                         if (data.info == "登录成功") {
                             window.location.href = "/index";
                         }
-
                     }
                 })
                 return false;

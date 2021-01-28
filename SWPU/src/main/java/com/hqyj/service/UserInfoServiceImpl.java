@@ -283,4 +283,18 @@ public class UserInfoServiceImpl implements UserInfoService{
 
         return "修改密码失败";
     }
+
+    @Override
+    public String updateHead(UserInfo user, HttpServletRequest request) {
+        //从session中获取当前用户信息
+        HttpSession session = request.getSession();
+        UserInfo u = (UserInfo) session.getAttribute("user");
+        //存入要修改的用户id
+        user.setUserId(u.getUserId());
+        int num = userInfoDao.updateHead(user);
+        if (num>0){
+            return "保存成功";
+        }
+        return "保存失败";
+    }
 }

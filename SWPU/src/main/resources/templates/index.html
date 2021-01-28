@@ -36,10 +36,11 @@
         <ul class="layui-nav right" lay-filter="">
           <li class="layui-nav-item">
             <a href="javascript:;">
-                <span th:text="${session.user.getUserName()}"></span>
+                <img src="/images/bj.jpg" th:src="${session.user.url}" width="50px" height="30px" id="head">
+                <span th:text="${session.user.userName}"></span>
             </a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
+              <dd><a onclick="x_admin_show('更改头像','/updateHead')">更改头像</a></dd>
               <dd><a onclick="x_admin_show('修改密码','/updatePwd')">修改密码</a></dd>
               <dd><a href="./login.html">退出</a></dd>
             </dl>

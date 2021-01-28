@@ -28,6 +28,17 @@ public class UserInfo extends MyPage {
     //描述修改密码新密码
     private String newPwd;
 
+    //描述url列
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getOldPwd() {
         return oldPwd;
     }

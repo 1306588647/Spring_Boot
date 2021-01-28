@@ -35,4 +35,7 @@ public interface UserInfoService {
     //修改密码,需要用户名，所以需要session
     String updatePwd(UserInfo user,HttpServletRequest request);
 
+    //修改头像
+    String updateHead(UserInfo user,HttpServletRequest request);
+
 }

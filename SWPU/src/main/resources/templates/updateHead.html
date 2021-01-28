@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" href="/css/font.css">
+        <link rel="stylesheet" href="/css/xadmin.css">
+        <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/xadmin.js"></script>
+    </head>
+    <body>
+        <div class="x-body">
+            <form class="layui-form">
+
+                <input type="hidden" name="url" class="image" id="url">
+                <div class="layui-form-item">
+                    <label class="layui-form-label ">照片:</label>
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn" id="test1">上传头像</button>
+                        <div class="layui-upload-list" style="margin-left: 100px">
+                            <img class="layui-upload-img" id="demo1" width="200" height="100">
+                            <p id="demoText"></p>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="layui-btn" onclick="saveHead()">保存</button>
+            </form>
+        </div>
+    </body>
+</html>
+
+
+<script>
+
+
+    //保存
+    function saveHead(){
+        //获取图片路径
+        var url = $("#url").val();
+        $.ajax({
+            url:"/saveHead",
+            type:"get",
+            data:{"url":url},
+            dataType:"json",
+            success:function (data){
+                if (data.info=="保存成功"){
+                    layer.alert("保存成功",function (index){
+                        //1关闭弹窗
+                        //获得frame索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //关闭frame
+                        parent.layer.close(index);
+
+                        //2更改当前头像
+                        parent.$("#head").attr("src",url);
+                    })
+                }else {
+
+                }
+
+            }
+        })
+    }
+
+
+    //加载layui文件上传组件
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+        //普通图片上传
+        var uploadInst = upload.render({
+
+            elem: '#test1'      //鼠标点击事件绑定按钮元素
+            ,url: '/upload'    //后端地址
+            ,accept:'images'    //上传的文件类型可选有:images图片、file所有文件，video视频，audio音频
+            ,size:50000         //文件大小单位是kb
+            ,before: function(obj){         //不管上传成功还是失败都需要执行的函数
+                obj.preview(function(index, file, result){
+                    //显示上传图片
+                    $('#demo1').attr('src', result);
+                });
+            }
+            ,done: function(res){       //访问服务端后执行的函数
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功的提示信息
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #4cae4c;">上传成功</span>');
+
+
+
+
+                var fileupload = $(".image");
+                //把图片在项目中的路径存入到 属性 class=image的input框中
+                fileupload.attr("value",res.src);
+                console.log(fileupload.attr("value"));
+                //上面代码等同于
+                $("#url").val(res.src);
+
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+
+</script>
