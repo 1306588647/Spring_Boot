@@ -1,11 +1,28 @@
 package com.hqyj.pojo;
 
 
+import java.io.Serializable;
+
 //用来描述表userInfo的信息
-public class UserInfo extends MyPage {
+public class UserInfo extends MyPage implements Serializable {
 
     //描述userInfo中userId列的
     private int userId;
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", userPwd='" + userPwd + '\'' +
+                ", salt='" + salt + '\'' +
+                ", condition='" + condition + '\'' +
+                ", conValue='" + conValue + '\'' +
+                ", oldPwd='" + oldPwd + '\'' +
+                ", newPwd='" + newPwd + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 
     //描述userInfo中userName列的
     private String userName;

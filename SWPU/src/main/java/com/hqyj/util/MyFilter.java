@@ -27,7 +27,6 @@ public class MyFilter implements Filter {
 
         //获取当前的url
         String url=request.getRequestURI();
-        System.out.println("url="+url);
 
 
         //判断用户否是否访问的是index页面
